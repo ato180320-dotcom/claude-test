@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>조장환 — 한국 전통주 장인</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #f5f5f7;
+      --surface: #ffffff;
+      --text-primary: #1d1d1f;
+      --text-secondary: #6e6e73;
+      --text-tertiary: #a1a1a6;
+      --accent: #b45309;
+      --accent-light: rgba(180, 83, 9, 0.08);
+      --border: rgba(0, 0, 0, 0.08);
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+      --shadow-md: 0 8px 32px rgba(0,0,0,0.1);
+    }
+
+    body {
+      background: var(--bg);
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
+      color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── 내비게이션 ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(245,245,247,0.85);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      letter-spacing: -0.2px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ── 히어로 ── */
+    .hero {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 96px 24px 88px;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 5px 14px;
+      border-radius: 20px;
+      margin-bottom: 28px;
+    }
+
+    .hero-name {
+      font-size: clamp(2.8rem, 8vw, 4.5rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+    }
+
+    .hero-name span {
+      display: block;
+      font-size: clamp(1.1rem, 3vw, 1.5rem);
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+    }
+
+    .hero-tagline {
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.6;
+      max-width: 520px;
+      margin: 0 auto 48px;
+    }
+
+    .hero-stats {
+      display: inline-flex;
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      background: var(--bg);
+    }
+
+    .stat {
+      padding: 18px 36px;
+      text-align: center;
+      border-right: 1px solid var(--border);
+    }
+
+    .stat:last-child { border-right: none; }
+
+    .stat-number {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      color: var(--text-primary);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .stat-number span {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--accent);
+    }
+
+    .stat-label {
+      font-size: 0.72rem;
+      color: var(--text-tertiary);
+      font-weight: 400;
+      letter-spacing: 0.03em;
+    }
+
+    /* ── 섹션 공통 ── */
+    .section {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 80px 24px;
+    }
+
+    .section-border {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-eyebrow {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+    }
+
+    .section-body {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      max-width: 640px;
+    }
+
+    /* ── 두 컬럼 레이아웃 ── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
+
+    /* ── 카드 ── */
+    .card {
+      background: var(--surface);
+      border-radius: 18px;
+      padding: 32px;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow 0.25s ease, transform 0.25s ease;
+    }
+
+    .card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .card-icon {
+      font-size: 2rem;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .card-body {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+
+    /* ── 타임라인 ── */
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 0 24px;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .timeline-item:last-child { border-bottom: none; }
+
+    .timeline-year {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--accent);
+      padding-top: 3px;
+    }
+
+    .timeline-content {}
+
+    .timeline-title {
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 5px;
+      letter-spacing: -0.01em;
+    }
+
+    .timeline-desc {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    /* ── 철학 인용 ── */
+    .philosophy {
+      background: var(--text-primary);
+      padding: 80px 24px;
+      text-align: center;
+    }
+
+    .philosophy-inner {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .philosophy blockquote {
+      font-size: clamp(1.2rem, 3vw, 1.6rem);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      line-height: 1.65;
+      color: #f5f5f7;
+      margin-bottom: 24px;
+    }
+
+    .philosophy cite {
+      font-size: 0.8rem;
+      color: rgba(245,245,247,0.45);
+      font-style: normal;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    /* ── 연락처 ── */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .contact-item {
+      background: var(--surface);
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .contact-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--accent-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .contact-label {
+      font-size: 0.7rem;
+      color: var(--text-tertiary);
+      margin-bottom: 3px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .contact-value {
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    /* ── 푸터 ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 24px;
+      text-align: center;
+    }
+
+    footer p {
+      font-size: 0.75rem;
+      color: var(--text-tertiary);
+    }
+  </style>
+</head>
+<body>
+
+<!-- 내비게이션 -->
+<nav>
+  <div class="nav-inner">
+    <span class="nav-logo">조장환</span>
+    <ul class="nav-links">
+      <li><a href="#about">소개</a></li>
+      <li><a href="#expertise">전문성</a></li>
+      <li><a href="#career">경력</a></li>
+      <li><a href="#contact">연락처</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- 히어로 -->
+<section class="hero">
+  <div class="hero-badge">한국 전통주 장인</div>
+  <h1 class="hero-name">
+    <span>CHO JANG HWAN</span>
+    조장환
+  </h1>
+  <p class="hero-tagline">
+    30년의 세월이 빚어낸 한국 전통주의 맛과 철학.<br>
+    우리 술의 가치를 세상에 전합니다.
+  </p>
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-number">30<span>년</span></div>
+      <div class="stat-label">전통주 제조 경력</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">∞</div>
+      <div class="stat-label">우리 술에 대한 열정</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">1<span>인</span></div>
+      <div class="stat-label">장인의 손맛</div>
+    </div>
+  </div>
+</section>
+
+<!-- 소개 -->
+<div id="about">
+  <div class="section section-border">
+    <p class="section-eyebrow">About</p>
+    <h2 class="section-title">술 한 잔에 담긴<br>30년의 이야기</h2>
+    <p class="section-body">
+      조장환은 한국 전통주 제조 분야에서 30년의 경력을 쌓아온 장인입니다.
+      쌀과 누룩, 물이 만나 발효되는 과정 속에서 우리 조상들의 지혜와
+      자연의 섭리를 발견해 왔습니다. 전통 방식을 고수하면서도
+      현대적 감각으로 재해석한 한국 전통주를 통해 우리 술 문화의
+      아름다움을 알리는 데 헌신하고 있습니다.
+    </p>
+  </div>
+</div>
+
+<!-- 전문성 -->
+<div id="expertise" style="background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+  <div class="section">
+    <p class="section-eyebrow">Expertise</p>
+    <h2 class="section-title" style="margin-bottom: 40px;">깊이 있는 전문 분야</h2>
+    <div class="two-col">
+      <div class="card">
+        <span class="card-icon">🍶</span>
+        <div class="card-title">전통 발효 기술</div>
+        <div class="card-body">막걸리, 청주, 소주 등 전통 방식의 발효주 제조 전 과정에 정통한 기술을 보유하고 있습니다. 누룩 제조부터 숙성까지 모든 단계를 손으로 다룹니다.</div>
+      </div>
+      <div class="card">
+        <span class="card-icon">🌾</span>
+        <div class="card-title">원료 선별 및 배합</div>
+        <div class="card-body">국내산 쌀·보리·통밀 등 원재료의 품질을 감별하고 최적의 배합 비율을 결정하는 노하우를 30년에 걸쳐 체득하였습니다.</div>
+      </div>
+      <div class="card">
+        <span class="card-icon">🏺</span>
+        <div class="card-title">전통 제조 방식 계승</div>
+        <div class="card-body">조선시대 문헌에 기록된 전통 양조법을 연구하고 현대에 맞게 재현하는 작업을 지속적으로 이어오고 있습니다.</div>
+      </div>
+      <div class="card">
+        <span class="card-icon">🎓</span>
+        <div class="card-title">교육 및 강의</div>
+        <div class="card-body">한국 전통주의 역사와 문화, 제조 과정을 대중에게 알리는 교육 활동을 통해 우리 술 문화 저변 확대에 기여하고 있습니다.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 경력 -->
+<div id="career">
+  <div class="section section-border">
+    <p class="section-eyebrow">Career</p>
+    <h2 class="section-title" style="margin-bottom: 40px;">30년의 발자취</h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-year">00대학교</div>
+        <div class="timeline-content">
+          <div class="timeline-title">관련 학과 졸업</div>
+          <div class="timeline-desc">전통 발효 및 식품 관련 학문을 전공하며 한국 전통주에 대한 학문적 기반을 다졌습니다.</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">경력 초기</div>
+        <div class="timeline-content">
+          <div class="timeline-title">전통주 양조장 입문</div>
+          <div class="timeline-desc">전통 양조장에서 기초부터 배우며 발효와 숙성의 원리를 몸으로 익혔습니다.</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">경력 중기</div>
+        <div class="timeline-content">
+          <div class="timeline-title">독자적 제조법 개발</div>
+          <div class="timeline-desc">오랜 연구와 실험을 통해 전통을 지키면서도 현대적 감각을 더한 독자적인 전통주 제조법을 완성했습니다.</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">현재</div>
+        <div class="timeline-content">
+          <div class="timeline-title">한국 전통주 제조 장인 · 30년 경력</div>
+          <div class="timeline-desc">전통주 제조 및 보급, 교육 활동을 통해 한국 술 문화의 가치를 알리는 데 힘쓰고 있습니다.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 철학 -->
+<div class="philosophy">
+  <div class="philosophy-inner">
+    <blockquote>
+      "좋은 술은 서두르지 않습니다.<br>
+      시간과 정성, 그리고 자연이 빚어내는 것이 진정한 전통주입니다."
+    </blockquote>
+    <cite>조장환</cite>
+  </div>
+</div>
+
+<!-- 연락처 -->
+<div id="contact">
+  <div class="section">
+    <p class="section-eyebrow">Contact</p>
+    <h2 class="section-title" style="margin-bottom: 32px;">함께 이야기해요</h2>
+    <div class="contact-grid">
+      <div class="contact-item">
+        <div class="contact-icon">✉️</div>
+        <div>
+          <div class="contact-label">이메일</div>
+          <div class="contact-value">ato180320@gmail.com</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">🍶</div>
+        <div>
+          <div class="contact-label">전문 분야</div>
+          <div class="contact-value">한국 전통주 제조</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">🏫</div>
+        <div>
+          <div class="contact-label">출신 대학</div>
+          <div class="contact-value">00대학교</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 조장환 · 한국 전통주 장인 · 경력 30년</p>
+</footer>
+
+</body>
+</html>

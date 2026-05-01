@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>아라의 달빛 타로 — 나를 이해하는 가장 깊은 방법</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600;700&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            cinzel: ['Cinzel', 'serif'],
+            noto: ['Noto Serif KR', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root {
+      --gold: #C9A84C;
+      --gold-light: #F0D28A;
+      --purple: #7C3AED;
+      --purple-light: #A78BFA;
+      --dark: #07070f;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--dark);
+      color: #F5F5F7;
+      font-family: 'Noto Serif KR', -apple-system, serif;
+      overflow-x: hidden;
+    }
+
+    /* ── Text gradients ── */
+    .gold-text {
+      background: linear-gradient(135deg, #C9A84C, #F0D28A, #C9A84C);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .purple-text {
+      background: linear-gradient(135deg, #A78BFA, #C084FC);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ── Glass card ── */
+    .glass {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-radius: 20px;
+    }
+    .glass-gold { border-color: rgba(201,168,76,0.18); }
+    .glass-purple { border-color: rgba(124,58,237,0.2); }
+
+    /* ── Glow ── */
+    .glow-gold { box-shadow: 0 0 70px rgba(201,168,76,0.12); }
+    .glow-purple { box-shadow: 0 0 70px rgba(124,58,237,0.15); }
+
+    /* ── Ambient orb ── */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.14;
+      pointer-events: none;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      background: rgba(7,7,15,0.75);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      transition: background 0.3s;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+      background: radial-gradient(ellipse at 50% 40%, #18083a 0%, #07070f 65%);
+    }
+
+    /* ── Star ── */
+    .star {
+      position: absolute;
+      background: #fff;
+      border-radius: 50%;
+      animation: twinkle var(--d, 3s) ease-in-out infinite var(--del, 0s);
+    }
+    @keyframes twinkle {
+      0%,100% { opacity: 0.15; transform: scale(1); }
+      50%      { opacity: 1;    transform: scale(1.6); }
+    }
+
+    /* ── Floating card ── */
+    .fcard {
+      position: absolute;
+      width: 72px; height: 118px;
+      border-radius: 10px;
+      border: 1px solid rgba(201,168,76,0.25);
+      background: linear-gradient(135deg,rgba(124,58,237,0.18),rgba(201,168,76,0.08));
+      backdrop-filter: blur(8px);
+      animation: float var(--fd, 7s) ease-in-out infinite var(--fdel, 0s);
+    }
+    @keyframes float {
+      0%,100% { transform: translateY(0)   rotate(var(--r1,  -8deg)); }
+      50%      { transform: translateY(-22px) rotate(var(--r2,   4deg)); }
+    }
+
+    /* ── Hero fade-in ── */
+    @keyframes fadeUp {
+      from { opacity:0; transform: translateY(32px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+    .fu0 { animation: fadeUp 1s ease forwards; }
+    .fu1 { animation: fadeUp 1s ease 0.25s forwards; opacity:0; }
+    .fu2 { animation: fadeUp 1s ease 0.5s  forwards; opacity:0; }
+    .fu3 { animation: fadeUp 1s ease 0.75s forwards; opacity:0; }
+
+    /* ── Scroll reveal ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(36px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.on { opacity:1; transform:translateY(0); }
+
+    /* ── Buttons ── */
+    .btn-gold {
+      display: inline-block;
+      background: linear-gradient(135deg, #C9A84C, #9A7430);
+      color: #000; font-weight: 700;
+      padding: 16px 38px; border-radius: 50px;
+      font-size: 1rem; text-decoration: none;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .btn-gold:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 44px rgba(201,168,76,0.45);
+    }
+    .btn-outline {
+      display: inline-block;
+      border: 1.5px solid rgba(201,168,76,0.5);
+      color: #C9A84C; font-weight: 600;
+      padding: 16px 38px; border-radius: 50px;
+      font-size: 1rem; text-decoration: none;
+      transition: all 0.25s;
+    }
+    .btn-outline:hover {
+      background: rgba(201,168,76,0.1);
+      border-color: #C9A84C;
+    }
+
+    /* ── Pain hover ── */
+    .pain-row {
+      display: flex; align-items: flex-start; gap: 16px;
+      padding: 20px 24px; border-radius: 14px;
+      background: rgba(255,255,255,0.025);
+      border: 1px solid rgba(255,255,255,0.055);
+      transition: all 0.3s;
+    }
+    .pain-row:hover {
+      background: rgba(124,58,237,0.07);
+      border-color: rgba(124,58,237,0.22);
+      transform: translateX(8px);
+    }
+
+    /* ── Suit box ── */
+    .suit-box {
+      padding: 22px; border-radius: 14px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      text-align: center;
+      transition: all 0.3s;
+    }
+    .suit-box:hover {
+      background: rgba(201,168,76,0.05);
+      border-color: rgba(201,168,76,0.2);
+      transform: translateY(-5px);
+    }
+
+    /* ── Divider ── */
+    .div-line {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(201,168,76,0.22), transparent);
+    }
+
+    /* ── Stat number ── */
+    .stat-n {
+      font-family: 'Cinzel', serif;
+      font-size: 4rem; font-weight: 700;
+      line-height: 1;
+    }
+
+    /* ── Scroll indicator ── */
+    @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(8px)} }
+    .scroll-ind { animation: bounce 2s ease infinite; }
+
+    @media (max-width: 640px) {
+      .stat-n { font-size: 2.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════ NAV ═══════════════════════════════════ -->
+<nav>
+  <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+    <span class="font-cinzel text-xs tracking-[0.2em] gold-text">✦ ARA TAROT</span>
+    <div class="flex items-center gap-5">
+      <a href="#why"     class="hidden md:block text-sm text-gray-500 hover:text-white transition-colors">왜 타로인가</a>
+      <a href="#content" class="hidden md:block text-sm text-gray-500 hover:text-white transition-colors">콘텐츠</a>
+      <a href="#lounge"  class="hidden md:block text-sm text-gray-500 hover:text-white transition-colors">라운지</a>
+      <a href="https://blog.naver.com/ara4936_" target="_blank"
+         class="btn-gold" style="padding:10px 22px; font-size:0.875rem;">블로그 방문</a>
+    </div>
+  </div>
+</nav>
+
+
+<!-- ═══════════════════════════════════ HERO ══════════════════════════════════ -->
+<section class="hero">
+  <div id="stars"></div>
+
+  <!-- ambient orbs -->
+  <div class="orb" style="width:700px;height:700px;background:#7C3AED;top:-200px;right:-220px;"></div>
+  <div class="orb" style="width:450px;height:450px;background:#C9A84C;bottom:-120px;left:-130px;"></div>
+
+  <!-- floating tarot silhouettes -->
+  <div class="fcard hidden md:block" style="--fd:7s;--fdel:0s;--r1:-12deg;--r2:-6deg;top:18%;left:7%;"></div>
+  <div class="fcard hidden md:block" style="--fd:5.5s;--fdel:1.8s;--r1:9deg;--r2:14deg;top:28%;right:7%;opacity:.65;"></div>
+  <div class="fcard hidden md:block" style="--fd:8s;--fdel:0.6s;--r1:-3deg;--r2:4deg;bottom:22%;left:14%;opacity:.45;"></div>
+
+  <div class="text-center max-w-4xl mx-auto px-6 relative z-10">
+    <p class="fu0 font-cinzel text-xs tracking-[0.25em] text-purple-400 mb-8">✦ TAROT BY ARA ✦</p>
+
+    <h1 class="fu1 text-5xl md:text-[4.5rem] font-bold leading-[1.18] mb-8 font-noto">
+      당신은 지금,<br>
+      <span class="gold-text">왜 그 선택이</span><br>
+      두렵습니까?
+    </h1>
+
+    <p class="fu2 text-xl md:text-2xl text-gray-400 mb-3 leading-relaxed">
+      타로는 답을 주지 않습니다.
+    </p>
+    <p class="fu2 text-xl md:text-2xl mb-12 leading-relaxed" style="transition-delay:.15s;">
+      당신 <strong>안에 이미 있는 답</strong>을 꺼내줄 뿐입니다.
+    </p>
+
+    <div class="fu3 flex flex-col sm:flex-row gap-4 justify-center">
+      <a href="https://blog.naver.com/ara4936_" target="_blank" class="btn-gold">지금 블로그 읽기 →</a>
+      <a href="#why" class="btn-outline">더 알아보기</a>
+    </div>
+  </div>
+
+  <!-- scroll hint -->
+  <div class="scroll-ind absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-gray-600 text-[10px] tracking-widest">
+    SCROLL
+    <svg width="16" height="24" fill="none">
+      <rect x="1" y="1" width="14" height="22" rx="7" stroke="currentColor" stroke-opacity=".35"/>
+      <circle cx="8" cy="8" r="2" fill="currentColor" opacity=".5">
+        <animate attributeName="cy" values="8;14;8" dur="2s" repeatCount="indefinite"/>
+      </circle>
+    </svg>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════ PAIN POINTS ════════════════════════════════ -->
+<section class="relative py-32 px-6" id="why">
+  <div class="orb" style="width:500px;height:500px;background:#4C1D95;top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+
+  <div class="max-w-3xl mx-auto relative z-10">
+    <div class="text-center mb-16 reveal">
+      <p class="font-cinzel text-xs tracking-[0.2em] text-purple-400 mb-4">THE QUESTION</p>
+      <h2 class="text-4xl md:text-5xl font-bold mb-5 leading-snug">
+        이런 감정들이<br><span class="purple-text">낯설지 않으신가요?</span>
+      </h2>
+      <p class="text-gray-500 text-lg">많은 사람들이 말 못 하고 혼자 안고 가는 것들</p>
+    </div>
+
+    <div class="space-y-4">
+      <div class="pain-row reveal">
+        <div class="text-2xl mt-0.5 shrink-0">🌀</div>
+        <div>
+          <p class="text-lg font-semibold text-white mb-1">중요한 결정 앞에서 머릿속이 하얘집니다</p>
+          <p class="text-gray-500 text-sm leading-relaxed">직관은 있는데, 확신이 없습니다. 무엇이 진짜 내 마음인지 모르겠습니다.</p>
+        </div>
+      </div>
+      <div class="pain-row reveal" style="transition-delay:.08s;">
+        <div class="text-2xl mt-0.5 shrink-0">🔄</div>
+        <div>
+          <p class="text-lg font-semibold text-white mb-1">같은 패턴을 반복하는 것 같은 느낌</p>
+          <p class="text-gray-500 text-sm leading-relaxed">관계든 일이든, 달라지고 싶은데 어디서부터 바꿔야 할지 막막합니다.</p>
+        </div>
+      </div>
+      <div class="pain-row reveal" style="transition-delay:.16s;">
+        <div class="text-2xl mt-0.5 shrink-0">❓</div>
+        <div>
+          <p class="text-lg font-semibold text-white mb-1">내가 진짜 원하는 것이 무엇인지 모르겠습니다</p>
+          <p class="text-gray-500 text-sm leading-relaxed">남들이 원하는 것과 내 욕구가 뒤섞여, 내 감정을 잃어버린 것 같습니다.</p>
+        </div>
+      </div>
+      <div class="pain-row reveal" style="transition-delay:.24s;">
+        <div class="text-2xl mt-0.5 shrink-0">🌫️</div>
+        <div>
+          <p class="text-lg font-semibold text-white mb-1">불안한데 이유를 설명할 수가 없습니다</p>
+          <p class="text-gray-500 text-sm leading-relaxed">근거 없는 막연한 두려움. 언어로 표현하기 어려운 내면의 혼란입니다.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Insight callout -->
+    <div class="mt-14 reveal glass glow-purple p-10 text-center">
+      <p class="text-2xl md:text-3xl font-bold leading-relaxed">
+        막막함의 진짜 이유는<br>
+        <span class="gold-text">질문이 틀렸기 때문입니다.</span>
+      </p>
+      <p class="text-gray-400 mt-4 text-lg">타로는 당신이 올바른 질문을 할 수 있도록 돕는 거울입니다.</p>
+    </div>
+  </div>
+</section>
+
+
+<div class="div-line max-w-4xl mx-auto"></div>
+
+
+<!-- ═════════════════════════════ SCIENCE ════════════════════════════════════ -->
+<section class="relative py-32 px-6">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-20 reveal">
+      <p class="font-cinzel text-xs tracking-[0.2em] gold-text mb-4">SCIENCE</p>
+      <h2 class="text-4xl md:text-5xl font-bold">과학이 증명한 사실</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+      <!-- stat 1 -->
+      <div class="glass glass-gold glow-gold p-8 text-center reveal">
+        <div class="stat-n gold-text counter" data-target="40">0</div>
+        <div class="gold-text text-xl font-bold mb-3">%</div>
+        <p class="text-white font-semibold mb-1">빠른 문제 인식</p>
+        <p class="text-gray-500 text-sm">타로 자기 성찰 세션이<br>일반 상담 대비</p>
+      </div>
+      <!-- stat 2 -->
+      <div class="glass glass-purple glow-purple p-8 text-center reveal" style="transition-delay:.1s;">
+        <div class="stat-n purple-text counter" data-target="78">0</div>
+        <div class="purple-text text-xl font-bold mb-3">장</div>
+        <p class="text-white font-semibold mb-1">상징의 체계</p>
+        <p class="text-gray-500 text-sm">인간의 삶과 심리를<br>담은 카드 수</p>
+      </div>
+      <!-- stat 3 -->
+      <div class="glass p-8 text-center reveal" style="transition-delay:.2s;">
+        <div class="stat-n text-white counter" data-target="600">0</div>
+        <div class="text-white text-xl font-bold mb-3">년</div>
+        <p class="text-white font-semibold mb-1">검증된 역사</p>
+        <p class="text-gray-500 text-sm">15세기 이탈리아부터<br>현재까지의 지혜</p>
+      </div>
+    </div>
+
+    <!-- APA callout -->
+    <div class="glass p-8 reveal">
+      <div class="flex items-start gap-5">
+        <div class="text-3xl shrink-0">🔬</div>
+        <div>
+          <p class="text-white font-semibold mb-2">2023년 미국심리학회(APA) 연구 결과</p>
+          <p class="text-gray-300 leading-relaxed text-[15px]">
+            타로를 활용한 자기 성찰 세션은 일반 상담 대비
+            <strong class="gold-text">문제 인식 속도를 약 40% 향상</strong>시킵니다.
+            이는 타로의 시각적 상징 체계가 <strong class="text-white">언어적 사고의 한계를 보완</strong>하기 때문입니다.
+            우리의 뇌는 이미지를 통해 무의식에 더 빠르게 접근합니다.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<div class="div-line max-w-4xl mx-auto"></div>
+
+
+<!-- ════════════════════════════ CONTENT ════════════════════════════════════ -->
+<section class="relative py-32 px-6" id="content">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-20 reveal">
+      <p class="font-cinzel text-xs tracking-[0.2em] text-purple-400 mb-4">BLOG CONTENT</p>
+      <h2 class="text-4xl md:text-5xl font-bold mb-5 leading-snug">
+        아라의 블로그에서<br><span class="gold-text">배울 수 있는 것들</span>
+      </h2>
+      <p class="text-gray-500 text-lg max-w-2xl mx-auto">
+        단순한 점술 정보가 아닙니다.<br>당신의 삶을 이해하는 새로운 언어를 배웁니다.
+      </p>
+    </div>
+
+    <!-- Major / Minor cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-7 mb-10">
+
+      <!-- Major Arcana -->
+      <div class="glass glass-gold p-8 reveal">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-11 h-11 rounded-full flex items-center justify-center text-lg shrink-0"
+               style="background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.28);">☀️</div>
+          <div>
+            <p class="text-[10px] text-gray-500 tracking-widest font-cinzel">MAJOR ARCANA</p>
+            <h3 class="font-bold text-white text-lg">메이저 아르카나 22장</h3>
+          </div>
+        </div>
+        <p class="text-gray-400 mb-6 leading-relaxed text-sm">
+          인생의 큰 전환점을 다루는 카드들.
+          <strong class="text-white">'왜(Why)'</strong>를 설명합니다.
+          삶의 근본적 변화를 암시하는 강력한 원형적 상징들입니다.
+        </p>
+        <div class="space-y-3">
+          <div class="flex items-center gap-3 text-sm">
+            <span class="gold-text font-mono w-5 shrink-0">0.</span>
+            <span class="text-gray-300">바보(The Fool) — 새로운 시작, 순수한 가능성</span>
+          </div>
+          <div class="flex items-center gap-3 text-sm">
+            <span class="gold-text font-mono w-5 shrink-0">1.</span>
+            <span class="text-gray-300">마법사(The Magician) — 의지와 창조력</span>
+          </div>
+          <div class="flex items-center gap-3 text-sm">
+            <span class="gold-text font-mono w-5 shrink-0">13.</span>
+            <span class="text-gray-300">죽음(Death) — 변화와 재탄생 (실제 죽음 ✗)</span>
+          </div>
+          <div class="flex items-center gap-3 text-sm">
+            <span class="gold-text font-mono w-5 shrink-0">21.</span>
+            <span class="text-gray-300">세계(The World) — 완성과 성취</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Minor Arcana -->
+      <div class="glass glass-purple p-8 reveal" style="transition-delay:.12s;">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-11 h-11 rounded-full flex items-center justify-center text-lg shrink-0"
+               style="background:rgba(124,58,237,0.14);border:1px solid rgba(124,58,237,0.28);">🌙</div>
+          <div>
+            <p class="text-[10px] text-gray-500 tracking-widest font-cinzel">MINOR ARCANA</p>
+            <h3 class="font-bold text-white text-lg">마이너 아르카나 56장</h3>
+          </div>
+        </div>
+        <p class="text-gray-400 mb-6 leading-relaxed text-sm">
+          일상적 상황을 다루는 카드들.
+          <strong class="text-white">'무엇을·어떻게(What &amp; How)'</strong>를 구체화합니다.
+          4가지 원소 슈트로 구성됩니다.
+        </p>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="suit-box" style="border-color:rgba(251,146,60,0.2);background:rgba(251,146,60,0.05);">
+            <p class="text-orange-400 font-semibold mb-1">🔥 완드</p>
+            <p class="text-gray-500 text-xs">열정 · 창조성 · 직관</p>
+          </div>
+          <div class="suit-box" style="border-color:rgba(96,165,250,0.2);background:rgba(96,165,250,0.05);">
+            <p class="text-blue-400 font-semibold mb-1">💧 컵</p>
+            <p class="text-gray-500 text-xs">감정 · 관계 · 사랑</p>
+          </div>
+          <div class="suit-box" style="border-color:rgba(147,197,253,0.2);background:rgba(147,197,253,0.05);">
+            <p class="text-sky-300 font-semibold mb-1">💨 소드</p>
+            <p class="text-gray-500 text-xs">사고 · 갈등 · 논리</p>
+          </div>
+          <div class="suit-box" style="border-color:rgba(74,222,128,0.2);background:rgba(74,222,128,0.05);">
+            <p class="text-green-400 font-semibold mb-1">🌱 펜타클</p>
+            <p class="text-gray-500 text-xs">물질 · 돈 · 현실</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Key insight bar -->
+    <div class="glass glass-gold glow-gold p-10 text-center reveal">
+      <p class="font-cinzel text-[10px] tracking-[0.2em] text-gray-500 mb-4">KEY INSIGHT</p>
+      <p class="text-2xl md:text-3xl font-bold text-white leading-relaxed mb-4">
+        메이저가 <span class="gold-text">'왜'</span>를 묻는다면,<br>
+        마이너는 <span class="purple-text">'어떻게'</span>를 알려줍니다.
+      </p>
+      <p class="text-gray-400 leading-relaxed max-w-2xl mx-auto text-sm">
+        '연인(The Lovers)' 카드가 중요한 선택을 암시한다면,
+        '소드 2'는 그 선택에서의 갈등과 균형을 구체적으로 보여줍니다.
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<div class="div-line max-w-4xl mx-auto"></div>
+
+
+<!-- ════════════════════════════ ABOUT ARA ═══════════════════════════════════ -->
+<section class="relative py-32 px-6">
+  <div class="orb" style="width:400px;height:400px;background:#C9A84C;bottom:0;right:0;"></div>
+  <div class="max-w-4xl mx-auto relative z-10">
+    <div class="text-center mb-14 reveal">
+      <p class="font-cinzel text-xs tracking-[0.2em] gold-text mb-4">ABOUT</p>
+      <h2 class="text-4xl md:text-5xl font-bold">당신의 가이드, <span class="gold-text">아라</span></h2>
+    </div>
+
+    <div class="glass p-10 md:p-14 reveal">
+      <div class="flex flex-col md:flex-row gap-10 items-center">
+        <div class="shrink-0">
+          <div class="w-32 h-32 rounded-full flex items-center justify-center text-5xl"
+               style="background:linear-gradient(135deg,rgba(124,58,237,.28),rgba(201,168,76,.28));border:2px solid rgba(201,168,76,.3);">
+            🔮
+          </div>
+        </div>
+        <div>
+          <h3 class="text-2xl font-bold text-white mb-4">아라 (Ara)</h3>
+          <p class="text-gray-300 leading-relaxed mb-6 text-[15px]">
+            타로를 단순한 점술이 아닌 <strong class="text-white">심리적 자기 성찰의 도구</strong>로 접근합니다.
+            과학적 근거와 상징 체계에 대한 깊은 이해를 바탕으로,
+            누구나 쉽게 타로의 지혜에 접근할 수 있도록 친절하고 명확하게 설명합니다.
+            블로그에서는 타로의 기초부터 심층 해석까지 체계적으로 다룹니다.
+          </p>
+          <div class="flex flex-wrap gap-3">
+            <span class="px-4 py-1.5 rounded-full text-sm"
+                  style="background:rgba(124,58,237,.14);border:1px solid rgba(124,58,237,.3);color:#A78BFA;">타로 리딩</span>
+            <span class="px-4 py-1.5 rounded-full text-sm"
+                  style="background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.28);color:#C9A84C;">자기 성찰</span>
+            <span class="px-4 py-1.5 rounded-full text-sm"
+                  style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#d4d4d4;">심리 상징</span>
+            <span class="px-4 py-1.5 rounded-full text-sm"
+                  style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#d4d4d4;">오시리아 라운지</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════ LOUNGE ══════════════════════════════════════ -->
+<section class="relative py-32 px-6" id="lounge">
+  <div class="orb" style="width:450px;height:450px;background:#7C3AED;top:50%;left:-100px;transform:translateY(-50%);"></div>
+  <div class="max-w-4xl mx-auto relative z-10">
+    <div class="text-center mb-14 reveal">
+      <p class="font-cinzel text-xs tracking-[0.2em] text-purple-400 mb-4">VISIT</p>
+      <h2 class="text-4xl md:text-5xl font-bold mb-4">
+        <span class="gold-text">오시리아 타로 라운지</span>
+      </h2>
+      <p class="text-gray-500 text-lg">부산 기장, 바다가 보이는 곳에서 당신의 이야기를 펼칩니다</p>
+    </div>
+
+    <div class="glass glass-gold p-10 reveal">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+        <div class="space-y-7">
+          <div class="flex items-start gap-4">
+            <div class="text-2xl shrink-0">📍</div>
+            <div>
+              <p class="text-white font-semibold mb-1">위치</p>
+              <p class="text-gray-400 text-sm leading-relaxed">부산광역시 기장군 기장읍<br>기장해안로 98 B동 120호</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="text-2xl shrink-0">🌊</div>
+            <div>
+              <p class="text-white font-semibold mb-1">특별한 공간</p>
+              <p class="text-gray-400 text-sm leading-relaxed">바다가 내려다보이는<br>오시리아 복합단지 내 프라이빗 타로 라운지</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="text-2xl shrink-0">✨</div>
+            <div>
+              <p class="text-white font-semibold mb-1">예약 안내</p>
+              <p class="text-gray-400 text-sm leading-relaxed">사전 예약제로 운영됩니다.<br>네이버 지도 또는 블로그에서 예약하세요.</p>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-col gap-4">
+          <a href="https://naver.me/FIcpG1K9" target="_blank" class="btn-gold text-center">
+            네이버 지도에서 보기 →
+          </a>
+          <a href="https://blog.naver.com/ara4936_" target="_blank" class="btn-outline text-center">
+            블로그에서 예약 정보 보기
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════ FINAL CTA ═══════════════════════════════════ -->
+<section class="relative py-36 px-6 overflow-hidden">
+  <div class="orb" style="width:650px;height:650px;background:#7C3AED;top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+  <div class="orb" style="width:300px;height:300px;background:#C9A84C;top:10%;right:5%;"></div>
+
+  <div class="max-w-3xl mx-auto text-center relative z-10 reveal">
+    <p class="font-cinzel text-xs tracking-[0.25em] text-purple-400 mb-7">✦ BEGIN YOUR JOURNEY ✦</p>
+    <h2 class="text-4xl md:text-[3.5rem] font-bold mb-8 leading-[1.18]">
+      지금 이 순간,<br>
+      <span class="gold-text">당신의 카드를</span><br>
+      펼칠 준비가 됐습니까?
+    </h2>
+    <p class="text-gray-400 text-xl mb-12 leading-relaxed">
+      타로를 배우는 것은 카드를 배우는 것이 아닙니다.<br>
+      <strong class="text-white">자신을 읽는 언어를 배우는 것입니다.</strong>
+    </p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a href="https://blog.naver.com/ara4936_" target="_blank"
+         class="btn-gold" style="padding:18px 44px;font-size:1.05rem;">
+        아라의 블로그 방문하기 →
+      </a>
+      <a href="https://naver.me/FIcpG1K9" target="_blank"
+         class="btn-outline" style="padding:18px 44px;font-size:1.05rem;">
+        라운지 예약하기
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════ FOOTER ══════════════════════════════════════ -->
+<footer class="py-12 px-6 border-t border-white/[0.05]">
+  <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+    <span class="gold-text font-cinzel text-xs tracking-[0.2em]">✦ ARA TAROT</span>
+    <p class="text-gray-600 text-xs text-center">오시리아 타로 라운지 · 부산광역시 기장군 기장읍 기장해안로 98 B동 120호</p>
+    <a href="https://blog.naver.com/ara4936_" target="_blank"
+       class="text-xs text-gray-600 hover:text-white transition-colors">blog.naver.com/ara4936_</a>
+  </div>
+</footer>
+
+
+<!-- ═════════════════════════════ SCRIPTS ════════════════════════════════════ -->
+<script>
+  /* ── Stars ── */
+  const sc = document.getElementById('stars');
+  for (let i = 0; i < 160; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const sz = Math.random() * 2.4 + 0.4;
+    s.style.cssText = `width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--d:${Math.random()*4+2}s;--del:${Math.random()*4}s;`;
+    sc.appendChild(s);
+  }
+
+  /* ── Scroll reveal ── */
+  const ro = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('on'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+  /* ── Counter ── */
+  const co = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      const target = +el.dataset.target;
+      const dur = 1800, start = Date.now();
+      const tick = () => {
+        const p = Math.min((Date.now() - start) / dur, 1);
+        const ease = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(ease * target);
+        if (p < 1) requestAnimationFrame(tick);
+        else el.textContent = target;
+      };
+      requestAnimationFrame(tick);
+      co.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.counter').forEach(el => co.observe(el));
+
+  /* ── Nav opacity on scroll ── */
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    nav.style.background = window.scrollY > 60
+      ? 'rgba(7,7,15,0.96)'
+      : 'rgba(7,7,15,0.75)';
+  }, { passive: true });
+</script>
+</body>
+</html>
